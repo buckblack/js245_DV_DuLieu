@@ -1,0 +1,65 @@
+{
+	"Ten": "Espresso Con Panna",
+	"Ma_so": "CA_PHE_10",
+	"Don_gia_Ban": 35800,
+	"Nhom_Mat_hang": {
+		"Ten": "Điện thoại",
+		"Ma_so": "CA_PHE"
+	},
+	"Danh_sach_Ban_hang": [
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 35800,
+			"So_luong": 3,
+			"Tien": 107400
+		},
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 35800,
+			"So_luong": 2,
+			"Tien": 71600
+		},
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 35800,
+			"So_luong": 1,
+			"Tien": 35800
+		},
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 35800,
+			"So_luong": 1,
+			"Tien": 35800
+		},
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 35800,
+			"So_luong": 2,
+			"Tien": 71600
+		},
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 35800,
+			"So_luong": 3,
+			"Tien": 107400
+		},
+		{
+			"Ngay": "2018-01-07T04:18:15.195Z",
+			"So_luong": 3,
+			"Don_gia": 35800,
+			"Tien": 107400
+		},
+		{
+			"Ngay": "2018-01-07T09:31:34.683Z",
+			"So_luong": 2,
+			"Don_gia": 35800,
+			"Tien": 71600
+		},
+		{
+			"Ngay": "2018-01-07T09:35:51.624Z",
+			"So_luong": 3,
+			"Don_gia": 35800,
+			"Tien": 107400
+		}
+	]
+}

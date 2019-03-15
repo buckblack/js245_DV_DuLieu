@@ -1,0 +1,41 @@
+{
+	"Ten": "Bắp cải trộn",
+	"Ma_so": "MON_AN_5",
+	"Don_gia_Ban": 5000,
+	"Nhom_Mat_hang": {
+		"Ten": "Món ăn",
+		"Ma_so": "MON_AN"
+	},
+	"Danh_sach_Ban_hang": [
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 5000,
+			"So_luong": 1,
+			"Tien": 5000
+		},
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 5000,
+			"So_luong": 1,
+			"Tien": 5000
+		},
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 5000,
+			"So_luong": 1,
+			"Tien": 5000
+		},
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 5000,
+			"So_luong": 2,
+			"Tien": 10000
+		},
+		{
+			"Ngay": "2018-01-07T04:10:09.397Z",
+			"So_luong": 5,
+			"Don_gia": 5000,
+			"Tien": 25000
+		}
+	]
+}

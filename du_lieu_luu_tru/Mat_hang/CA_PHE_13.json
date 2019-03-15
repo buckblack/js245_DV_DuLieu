@@ -1,0 +1,23 @@
+{
+  "Ten": "Cafe Sữa Đá",
+  "Ma_so": "CA_PHE_13",
+  "Don_gia_Ban": 33800,
+  "Nhom_Mat_hang": {
+    "Ten": "Điện thoại",
+    "Ma_so": "CA_PHE"
+  },
+  "Danh_sach_Ban_hang": [
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 33800,
+      "So_luong": 2,
+      "Tien": 67600
+    },
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 33800,
+      "So_luong": 2,
+      "Tien": 67600
+    }
+  ]
+}

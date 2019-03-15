@@ -1,0 +1,41 @@
+{
+  "Ten": "Mocha Đá",
+  "Ma_so": "CA_PHE_14",
+  "Don_gia_Ban": 35000,
+  "Nhom_Mat_hang": {
+    "Ten": "Điện thoại",
+    "Ma_so": "CA_PHE"
+  },
+  "Danh_sach_Ban_hang": [
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 35000,
+      "So_luong": 1,
+      "Tien": 35000
+    },
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 35000,
+      "So_luong": 2,
+      "Tien": 70000
+    },
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 35000,
+      "So_luong": 4,
+      "Tien": 140000
+    },
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 35000,
+      "So_luong": 2,
+      "Tien": 70000
+    },
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 35000,
+      "So_luong": 2,
+      "Tien": 70000
+    }
+  ]
+}

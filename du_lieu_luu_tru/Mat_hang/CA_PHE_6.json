@@ -1,0 +1,29 @@
+{
+	"Ten": "Caramel Frappuccino",
+	"Ma_so": "CA_PHE_6",
+	"Don_gia_Ban": 39800,
+	"Nhom_Mat_hang": {
+		"Ten": "Điện thoại",
+		"Ma_so": "CA_PHE"
+	},
+	"Danh_sach_Ban_hang": [
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 39800,
+			"So_luong": 3,
+			"Tien": 119400
+		},
+		{
+			"Ngay": "2018-01-06T00:00:00+07:00",
+			"Don_gia": 39800,
+			"So_luong": 1,
+			"Tien": 39800
+		},
+		{
+			"Ngay": "2018-01-07T04:19:07.502Z",
+			"So_luong": 2,
+			"Don_gia": 39800,
+			"Tien": 79600
+		}
+	]
+}

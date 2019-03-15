@@ -1,0 +1,20 @@
+{
+  "Ten":"Nhà hàng PET",
+  "Ma_so":"PET",
+  "Danh_sach_Nhan_vien":[
+    {
+      "Ho_ten":"Nguyễn thị ăn Uống",
+      "Ma_so":"NV_1",
+      "Ten_Dang_nhap":"NV_1",
+      "Mat_khau":"NV_1"
+    }
+  ],
+  "Danh_sach_Quan_ly":[
+    {
+      "Ho_ten":"Lê thị uống Ăn",
+      "Ma_so":"NV_2",
+      "Ten_Dang_nhap":"QL_1",
+      "Mat_khau":"QL_1"
+    }
+  ]
+ }

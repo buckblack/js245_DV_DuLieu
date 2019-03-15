@@ -1,0 +1,41 @@
+{
+  "Ten": "Mocha Frappuccino",
+  "Ma_so": "CA_PHE_8",
+  "Don_gia_Ban": 31600,
+  "Nhom_Mat_hang": {
+    "Ten": "Điện thoại",
+    "Ma_so": "CA_PHE"
+  },
+  "Danh_sach_Ban_hang": [
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 31600,
+      "So_luong": 2,
+      "Tien": 63200
+    },
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 31600,
+      "So_luong": 2,
+      "Tien": 63200
+    },
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 31600,
+      "So_luong": 1,
+      "Tien": 31600
+    },
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 31600,
+      "So_luong": 3,
+      "Tien": 94800
+    },
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 31600,
+      "So_luong": 4,
+      "Tien": 126400
+    }
+  ]
+}

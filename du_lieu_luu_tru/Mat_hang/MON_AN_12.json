@@ -1,0 +1,23 @@
+{
+  "Ten": "Gà sốt cay",
+  "Ma_so": "MON_AN_12",
+  "Don_gia_Ban": 30000,
+  "Nhom_Mat_hang": {
+    "Ten": "Món ăn",
+    "Ma_so": "MON_AN"
+  },
+  "Danh_sach_Ban_hang": [
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 30000,
+      "So_luong": 1,
+      "Tien": 30000
+    },
+    {
+      "Ngay": "2018-01-06T00:00:00+07:00",
+      "Don_gia": 30000,
+      "So_luong": 2,
+      "Tien": 60000
+    }
+  ]
+}
