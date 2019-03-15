@@ -1,7 +1,7 @@
 var NodeJs_Dich_vu = require("http")
 var Luu_tru = require("../xu_ly/xl_luu_tru")
 var Gui_thu = require("../xu_ly/xl_gui_thu")
-var Port = normalizePort(process.env.PORT || 1001)
+var Port = normalizePort(process.env.PORT || 1000)
 var Xu_ly_Tham_so = require('querystring')
 var Du_lieu = {}
 Du_lieu.ds_mon_an = Luu_tru.Doc_Du_lieu("Mat_hang")
