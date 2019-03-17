@@ -109,7 +109,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
         var dk = {
           "ma_hd": Number(laythamsao)
         }
-        cl_hoadon.find(dk,(err, req) => {
+        cl_hoadon.findOne(dk,(err, req) => {
           if (err)
             console.log(err);
           else {
