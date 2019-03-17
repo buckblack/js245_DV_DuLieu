@@ -24,6 +24,36 @@ MongoClient.connect(url, function (err, client) {
     // Chọn Collection
     cl_ban = db.collection("ban")
     cl_hoadon = db.collection("hoa_don")
+    cl_hoadon.findOne({
+      'ma_hd': 2
+    }, (err, res) => {
+      if (err) {
+        console.log(err)
+      } else {
+        if (res == null) {
+          //tạo hóa đơn mới
+          var hd_moi = {
+            "ma_hd": 2,
+            "ngay_lap": new Date(),
+            "trang_thai": "Chưa thanh toán",
+            "ma_nv": "1",
+            "ten_nv": "Tiến",
+            "ma_ban": 2,
+            "tong_tien": 0,
+            "chi_tiet": []
+          }
+          /*cl_hoadon.insert(hd_moi, (Loi, Ket_qua)=>{
+            if (Loi) {
+              console.log(Loi)
+            } else {
+              console.log(Ket_qua)
+            }
+          })*/
+        } else
+          console.log('11');
+
+      }
+    })
   }
 });
 var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
@@ -32,6 +62,8 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
   var thamso2;
   Yeu_cau.on('data', (chunk) => {
     Chuoi_Nhan += chunk
+    console.log(chunk);
+    
   }) //data: nhận dl từ client(như ajax)
   Yeu_cau.on('end', () => { //end: trả kq lại cho client
     if (Dia_chi_Xu_ly.indexOf('/') >= 0) {
@@ -90,12 +122,12 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
         }
       })
 
-    }else if (Ma_so_Xu_ly == "hoa_don_moi") {
+    } else if (Ma_so_Xu_ly == "hoa_don_moi") {
       ds_ban = cl_hoadon.find({}).toArray((err, req) => {
         if (err)
           console.log(err);
         else {
-          var Doi_tuong_Kq =Number(req[req.length-1].ma_hd)+1
+          var Doi_tuong_Kq = Number(req[req.length - 1].ma_hd) + 1
           Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
           Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
           Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -104,12 +136,23 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
           Dap_ung.end(Chuoi_Kq);
         }
       })
+    }else if (Ma_so_Xu_ly == "aaa") {
+
+          var Doi_tuong_Kq = 1;
+          Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
+          Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+          Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+          Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+          Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+          Dap_ung.end(Chuoi_Kq);
+        
+      
     } else if (Ma_so_Xu_ly == "tim_hoa_don") {
       try {
         var dk = {
           "ma_hd": Number(laythamsao)
         }
-        cl_hoadon.findOne(dk,(err, req) => {
+        cl_hoadon.findOne(dk, (err, req) => {
           if (err)
             console.log(err);
           else {
@@ -122,14 +165,13 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
             Dap_ung.end(Chuoi_Kq);
           }
         })
-      } catch (error) {
-      }
-    }else if (Ma_so_Xu_ly == "tim_ban") {
+      } catch (error) {}
+    } else if (Ma_so_Xu_ly == "tim_ban") {
       try {
         var dk = {
           "ma_ban": Number(laythamsao)
         }
-        cl_ban.findOne(dk,(err, req) => {
+        cl_ban.findOne(dk, (err, req) => {
           if (err)
             console.log(err);
           else {
@@ -142,8 +184,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
             Dap_ung.end(Chuoi_Kq);
           }
         })
-      } catch (error) {
-      }
+      } catch (error) {}
     } else {
       Chuoi_Kq = Luu_tru.Doc_Thong_tin_Dich_vu()
       Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
