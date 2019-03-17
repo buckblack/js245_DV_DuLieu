@@ -76,7 +76,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
         Dap_ung.end(Chuoi_Kq);
       })
     } else if (Ma_so_Xu_ly == "danh_sach_ban") {
-      ds_ban = cl_hoadon.find({}).toArray((err, req) => {
+      ds_ban = cl_ban.find({}).toArray((err, req) => {
         if (err)
           console.log(err);
         else {
