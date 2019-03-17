@@ -6,7 +6,30 @@ var Xu_ly_Tham_so = require('querystring')
 var Du_lieu = {}
 Du_lieu.ds_mon_an = Luu_tru.Doc_Du_lieu("Mat_hang")
 Du_lieu.Cua_hang = Luu_tru.Doc_Thong_tin_Cua_hang()
-
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
+var url = 'mongodb://admin:minhtien96@ds259154.mlab.com:59154/js245_doan';
+var ds_ban;
+MongoClient.connect(url, function (err, client) {
+  if (err) {
+    console.log('Không kết nối với CSDL. Error:', err);
+  } else {
+    console.log('Kết nối thành công', url);
+    var csdl = "js245_doan"; // Khai báo CSDL
+    // Xác định CSDL 
+    var db = client.db(csdl)
+    // Chọn Collection
+    var cl_ban = db.collection("ban")
+    console.log(cl_ban);
+    ds_ban = cl_ban.find({}).toArray((err, req) => {
+      if (err)
+        console.log(err);
+      else
+        console.log(req);
+        ds_ban=req;
+    })
+  }
+});
 var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
   var Chuoi_Nhan = ""
   var Dia_chi_Xu_ly = Yeu_cau.url.replace("/", "")
@@ -49,6 +72,15 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
         Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
         Dap_ung.end(Chuoi_Kq);
       })
+    } else if (Ma_so_Xu_ly == "danh_sach_ban") {
+      var Doi_tuong_Kq = ds_ban
+      Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
+      Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+      Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+      Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+      Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+      Dap_ung.end(Chuoi_Kq);
+
     } else {
       Chuoi_Kq = Luu_tru.Doc_Thong_tin_Dich_vu()
       Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
