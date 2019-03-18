@@ -25,7 +25,7 @@ MongoClient.connect(url, function (err, client) {
     cl_ban = db.collection("ban")
     cl_hoadon = db.collection("hoa_don")
     cl_hoadon.findOne({
-      'ma_hd': 1
+      'ma_hd': 2
     }, (err, res) => {
       if (err) {
         console.log(err)
@@ -61,7 +61,11 @@ MongoClient.connect(url, function (err, client) {
               chi_tiet: x
             }
           });*/
-          cl_hoadon.update({'ma_hd':1,'chi_tiet.ma_sp':'CA_PHE_1'},{$set: {"chi_tiet.$.so_luong": 3}});
+
+          //cl_hoadon.update({'ma_hd':1,'chi_tiet.ma_sp':'CA_PHE_1'},{$set: {"chi_tiet.$.so_luong": 3}});
+
+          cl_hoadon.update({ 'ma_hd':2},{'$pull':{ 'chi_tiet':{'ma_sp': 'CA_PHE_1' }}},{multi:true})
+
           /*cl_hoadon.chi_tiet.insert(hd_moi, (Loi, Ket_qua) => {
             if (Loi) {
               console.log(Loi)
