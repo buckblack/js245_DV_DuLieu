@@ -24,59 +24,7 @@ MongoClient.connect(url, function (err, client) {
     // Chọn Collection
     cl_ban = db.collection("ban")
     cl_hoadon = db.collection("hoa_don")
-    cl_hoadon.findOne({
-      'ma_hd': 2
-    }, (err, res) => {
-      if (err) {
-        console.log(err)
-      } else {
-        if (res == null) {
-          //tạo hóa đơn mới
-          var hd_moi = {
-            "ma_hd": 2,
-            "ngay_lap": new Date(),
-            "trang_thai": "Chưa thanh toán",
-            "ma_nv": "1",
-            "ten_nv": "Tiến",
-            "ma_ban": 2,
-            "tong_tien": 0,
-            "chi_tiet": []
-          }
-          cl_hoadon.insert(hd_moi, (Loi, Ket_qua) => {
-            if (Loi) {
-              console.log(Loi)
-            } else {
-              console.log(Ket_qua)
-            }
-          })
-        } else {
-          var x={
-            "ma_sp": "CA_PHE_3",
-            "ten_sp": "Cafe sữa",
-            "gia_ban": 20000,
-            "so_luong": 1
-        };
-          /*cl_hoadon.update({'ma_hd':2}, {
-            $push: {
-              chi_tiet: x
-            }
-          });*/
 
-          //cl_hoadon.update({'ma_hd':1,'chi_tiet.ma_sp':'CA_PHE_1'},{$set: {"chi_tiet.$.so_luong": 3}});
-
-          cl_hoadon.update({ 'ma_hd':2},{'$pull':{ 'chi_tiet':{'ma_sp': 'CA_PHE_1' }}},{multi:true})
-
-          /*cl_hoadon.chi_tiet.insert(hd_moi, (Loi, Ket_qua) => {
-            if (Loi) {
-              console.log(Loi)
-            } else {
-              console.log(Ket_qua)
-            }
-          })*/
-        }
-
-      }
-    })
   }
 });
 var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
@@ -88,7 +36,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
     console.log(chunk);
 
   }) //data: nhận dl từ client(như ajax)
-  Yeu_cau.on('end', () => { //end: trả kq lại cho client
+  Yeu_cau.on('end', async () => { //end: trả kq lại cho client
     if (Dia_chi_Xu_ly.indexOf('/') >= 0) {
       var giatri = Dia_chi_Xu_ly.split('/')
       Dia_chi_Xu_ly = giatri[0];
@@ -131,6 +79,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
         Dap_ung.end(Chuoi_Kq);
       })
     } else if (Ma_so_Xu_ly == "danh_sach_ban") {
+      cl_ban =await db.collection("ban")
       ds_ban = cl_ban.find({}).toArray((err, req) => {
         if (err)
           console.log(err);
@@ -144,6 +93,79 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
           Dap_ung.end(Chuoi_Kq);
         }
       })
+
+    } else if (Ma_so_Xu_ly == "chon_mon_an_vao_chi_tiet") {
+      var kq = JSON.parse(Chuoi_Nhan);
+      cl_hoadon = db.collection("hoa_don")
+      cl_ban = db.collection("ban")
+      cl_hoadon.findOne({
+        'ma_hd': kq.ma_hd
+      }, (err, res) => {
+        if (err) {
+          console.log(err)
+        } else {
+          if (res == null) {
+            //tạo hóa đơn mới
+            var hd_moi = {
+              "ma_hd": kq.ma_hd,
+              "ngay_lap": new Date(),
+              "trang_thai": "Chưa thanh toán",
+              "ma_nv": "1",
+              "ten_nv": "Tiến",
+              "ma_ban": kq.ma_ban,
+              "tong_tien": 0,
+              "chi_tiet": [{
+                "ma_sp": "CA_PHE_1",
+                "ten_sp": "Cafe Expresso",
+                "gia_ban": 45000,
+                "so_luong": 1
+              }]
+            }
+            cl_hoadon.insert(hd_moi, (Loi, Ket_qua) => {
+              if (Loi) {
+                console.log(Loi)
+              } else {
+                cl_ban.update({'ma_ban':kq.ma_ban},{$set:{'trang_thai':'đang phục vụ','hoa_don_phuc_vu':kq.ma_hd}})
+              }
+            })
+          } else {
+            var x = {
+              "ma_sp": "CA_PHE_3",
+              "ten_sp": "Cafe sữa",
+              "gia_ban": 20000,
+              "so_luong": 1
+            };
+            cl_hoadon.update({
+              'ma_hd': 2
+            }, {
+              $push: {
+                chi_tiet: x
+              }
+            });
+
+            //cl_hoadon.update({'ma_hd':1,'chi_tiet.ma_sp':'CA_PHE_1'},{$set: {"chi_tiet.$.so_luong": 3}});
+
+            //cl_hoadon.update({ 'ma_hd':2},{'$pull':{ 'chi_tiet':{'ma_sp': 'CA_PHE_1' }}},{multi:true})
+
+            /*cl_hoadon.chi_tiet.insert(hd_moi, (Loi, Ket_qua) => {
+              if (Loi) {
+                console.log(Loi)
+              } else {
+                console.log(Ket_qua)
+              }
+            })*/
+          }
+
+        }
+      })
+      var Doi_tuong_Kq = 1;
+      Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
+      Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+      Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+      Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+      Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+      Dap_ung.end(Chuoi_Kq);
+
 
     } else if (Ma_so_Xu_ly == "hoa_don_moi") {
       ds_ban = cl_hoadon.find({}).toArray((err, req) => {
@@ -161,7 +183,11 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
       })
     } else if (Ma_so_Xu_ly == "aaa") {
 
-      var Doi_tuong_Kq = 1;
+      var Doi_tuong_Kq = JSON.parse(Chuoi_Nhan);
+      console.log('------');
+      console.log(Doi_tuong_Kq);
+
+
       Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
       Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
       Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
