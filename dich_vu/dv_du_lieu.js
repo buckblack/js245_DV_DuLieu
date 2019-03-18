@@ -25,7 +25,7 @@ MongoClient.connect(url, function (err, client) {
     cl_ban = db.collection("ban")
     cl_hoadon = db.collection("hoa_don")
     cl_hoadon.findOne({
-      'ma_hd': 2
+      'ma_hd': 1
     }, (err, res) => {
       if (err) {
         console.log(err)
@@ -42,15 +42,34 @@ MongoClient.connect(url, function (err, client) {
             "tong_tien": 0,
             "chi_tiet": []
           }
-          /*cl_hoadon.insert(hd_moi, (Loi, Ket_qua)=>{
+          cl_hoadon.insert(hd_moi, (Loi, Ket_qua) => {
+            if (Loi) {
+              console.log(Loi)
+            } else {
+              console.log(Ket_qua)
+            }
+          })
+        } else {
+          var x={
+            "ma_sp": "CA_PHE_3",
+            "ten_sp": "Cafe sữa",
+            "gia_ban": 20000,
+            "so_luong": 1
+        };
+          /*cl_hoadon.update({'ma_hd':2}, {
+            $push: {
+              chi_tiet: x
+            }
+          });*/
+          cl_hoadon.update({'ma_hd':1,'chi_tiet.ma_sp':'CA_PHE_1'},{$set: {"chi_tiet.$.so_luong": 3}});
+          /*cl_hoadon.chi_tiet.insert(hd_moi, (Loi, Ket_qua) => {
             if (Loi) {
               console.log(Loi)
             } else {
               console.log(Ket_qua)
             }
           })*/
-        } else
-          console.log('11');
+        }
 
       }
     })
@@ -63,7 +82,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
   Yeu_cau.on('data', (chunk) => {
     Chuoi_Nhan += chunk
     console.log(chunk);
-    
+
   }) //data: nhận dl từ client(như ajax)
   Yeu_cau.on('end', () => { //end: trả kq lại cho client
     if (Dia_chi_Xu_ly.indexOf('/') >= 0) {
@@ -136,17 +155,17 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
           Dap_ung.end(Chuoi_Kq);
         }
       })
-    }else if (Ma_so_Xu_ly == "aaa") {
+    } else if (Ma_so_Xu_ly == "aaa") {
 
-          var Doi_tuong_Kq = 1;
-          Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
-          Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
-          Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-          Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
-          Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
-          Dap_ung.end(Chuoi_Kq);
-        
-      
+      var Doi_tuong_Kq = 1;
+      Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
+      Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+      Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+      Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+      Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+      Dap_ung.end(Chuoi_Kq);
+
+
     } else if (Ma_so_Xu_ly == "tim_hoa_don") {
       try {
         var dk = {
