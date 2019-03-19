@@ -79,8 +79,8 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
         Dap_ung.end(Chuoi_Kq);
       })
     } else if (Ma_so_Xu_ly == "danh_sach_ban") {
-      cl_ban =await db.collection("ban")
-      ds_ban = cl_ban.find({}).toArray((err, req) => {
+      cl_ban = db.collection("ban")
+      ds_ban = await cl_ban.find({}).toArray((err, req) => {
         if (err)
           console.log(err);
         else {
@@ -94,12 +94,23 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
         }
       })
 
+    } else if (Ma_so_Xu_ly == "thong_tin_mon_an") {
+      var data = JSON.parse(Chuoi_Nhan);
+      var Doi_tuong_Kq = Du_lieu.ds_mon_an.find(x => x.Ma_so == data.ma_sp);
+      Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
+      Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+      Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+      Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+      Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+      Dap_ung.end(Chuoi_Kq);
+
     } else if (Ma_so_Xu_ly == "chon_mon_an_vao_chi_tiet") {
       var kq = JSON.parse(Chuoi_Nhan);
-      cl_hoadon = db.collection("hoa_don")
-      cl_ban = db.collection("ban")
-      cl_hoadon.findOne({
-        'ma_hd': kq.ma_hd
+      var Doi_tuong_Kq;
+      cl_hoadon = await db.collection("hoa_don")
+      cl_ban = await db.collection("ban")
+      await cl_hoadon.findOne({
+        'ma_hd': Number(kq.ma_hd)
       }, (err, res) => {
         if (err) {
           console.log(err)
@@ -107,29 +118,86 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
           if (res == null) {
             //tạo hóa đơn mới
             var hd_moi = {
-              "ma_hd": kq.ma_hd,
+              "ma_hd": Number(kq.ma_hd),
               "ngay_lap": new Date(),
               "trang_thai": "Chưa thanh toán",
               "ma_nv": "1",
               "ten_nv": "Tiến",
               "ma_ban": kq.ma_ban,
               "tong_tien": 0,
-              "chi_tiet": [{
-                "ma_sp": "CA_PHE_1",
-                "ten_sp": "Cafe Expresso",
-                "gia_ban": 45000,
-                "so_luong": 1
-              }]
+              "chi_tiet": [kq.chi_tiet]
             }
-            cl_hoadon.insert(hd_moi, (Loi, Ket_qua) => {
+            cl_hoadon.insert(hd_moi, async (Loi, Ket_qua) => {
               if (Loi) {
                 console.log(Loi)
               } else {
-                cl_ban.update({'ma_ban':kq.ma_ban},{$set:{'trang_thai':'đang phục vụ','hoa_don_phuc_vu':kq.ma_hd}})
+                await cl_ban.update({
+                  'ma_ban': kq.ma_ban
+                }, {
+                  $set: {
+                    'trang_thai': 'đang phục vụ',
+                    'hoa_don_phuc_vu': kq.ma_hd.toString()
+                  }
+                })
+
+
+                Doi_tuong_Kq = 'ok'
+                console.log(Doi_tuong_Kq);
+                Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
+                Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+                Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+                Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+                Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+                Dap_ung.end(Chuoi_Kq);
+
+
               }
             })
           } else {
-            var x = {
+            var ct=res.chi_tiet.find(x=>x.ma_sp==kq.ma_mon);
+            if (ct == undefined) {
+              var c = {
+                ma_sp: "CA_PHE_13",
+                ten_sp: "Cafe Sữa Đá",
+                gia_ban: 33800,
+                so_luong: 1
+              }
+              cl_hoadon.update({
+                'ma_hd': Number(kq.ma_hd)
+              }, {
+                $push: {
+                  chi_tiet: kq.chi_tiet
+                }
+              });
+              Doi_tuong_Kq = 'ok'
+              console.log(Doi_tuong_Kq);
+              Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
+              Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+              Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+              Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+              Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+              Dap_ung.end(Chuoi_Kq);
+
+            } else {
+              cl_hoadon.update({
+                'ma_hd':Number(kq.ma_hd),
+                'chi_tiet.ma_sp': kq.ma_mon
+              }, {
+                $set: {
+                  "chi_tiet.$.so_luong": Number(ct.so_luong) + 1
+                }
+              });
+              Doi_tuong_Kq = 'ok'
+              console.log(Doi_tuong_Kq);
+              Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
+              Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+              Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+              Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+              Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+              Dap_ung.end(Chuoi_Kq);
+            }
+
+            /*var x = {
               "ma_sp": "CA_PHE_3",
               "ten_sp": "Cafe sữa",
               "gia_ban": 20000,
@@ -141,7 +209,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
               $push: {
                 chi_tiet: x
               }
-            });
+            });*/
 
             //cl_hoadon.update({'ma_hd':1,'chi_tiet.ma_sp':'CA_PHE_1'},{$set: {"chi_tiet.$.so_luong": 3}});
 
@@ -158,21 +226,21 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
 
         }
       })
-      var Doi_tuong_Kq = 1;
-      Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
+
+      /*Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
       Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
       Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
       Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
       Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
-      Dap_ung.end(Chuoi_Kq);
+      Dap_ung.end(Chuoi_Kq);*/
 
 
     } else if (Ma_so_Xu_ly == "hoa_don_moi") {
-      ds_ban = cl_hoadon.find({}).toArray((err, req) => {
+      cl_hoadon.find({}).toArray((err, req) => {
         if (err)
           console.log(err);
         else {
-          var Doi_tuong_Kq = Number(req[req.length - 1].ma_hd) + 1
+          var Doi_tuong_Kq = req.length+1;
           Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
           Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
           Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
