@@ -55,6 +55,20 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
       Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
       Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
       Dap_ung.end(Chuoi_Kq);
+    } else if (Ma_so_Xu_ly == "danh_sach_hoa_don") {
+      cl_hoadon = await db.collection("hoa_don")
+      cl_hoadon.find({}).toArray((err,res)=>{
+        if(res)
+        {
+          Chuoi_Kq = JSON.stringify(res)
+          Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+          Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+          Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+          Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+          Dap_ung.end(Chuoi_Kq);
+        }
+      })
+      
     } else if (Ma_so_Xu_ly == "Khach_hang_Lien_he") {
       var from = "long4581994@gmail.com"
       var to = "buckblack44@gmail.com"
@@ -92,6 +106,40 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
           Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
           Dap_ung.end(Chuoi_Kq);
         }
+      })
+
+    } else if (Ma_so_Xu_ly == "doi_so_luong") {
+      var data=JSON.parse(Chuoi_Nhan);
+      var dk={
+        'ma_hd':Number(data.ma_hd),
+        'chi_tiet.ma_sp':data.ma_sp
+      }
+      cl_hoadon = db.collection("hoa_don")
+      cl_hoadon.update(dk,{$set:{"chi_tiet.$.so_luong": Number(data.so_luong)}},(err,res)=>{
+        var Doi_tuong_Kq = 'ok'
+        Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
+        Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+        Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+        Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+        Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+        Dap_ung.end(Chuoi_Kq);
+      })
+
+    }else if (Ma_so_Xu_ly == "xoa_chi_tiet") {
+      var data=JSON.parse(Chuoi_Nhan);
+      var dk={
+        'ma_hd':Number(data.ma_hd),
+        'chi_tiet.ma_sp':data.ma_sp
+      }
+      cl_hoadon = db.collection("hoa_don")
+      cl_hoadon.update(dk,{'$pull':{ 'chi_tiet':{'ma_sp': data.ma_sp }}},{multi:true},(err,res)=>{
+        var Doi_tuong_Kq = 'ok'
+        Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
+        Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+        Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+        Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+        Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+        Dap_ung.end(Chuoi_Kq);
       })
 
     } else if (Ma_so_Xu_ly == "thong_tin_mon_an") {
@@ -154,7 +202,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
               }
             })
           } else {
-            var ct=res.chi_tiet.find(x=>x.ma_sp==kq.ma_mon);
+            var ct = res.chi_tiet.find(x => x.ma_sp == kq.ma_mon);
             if (ct == undefined) {
               var c = {
                 ma_sp: "CA_PHE_13",
@@ -180,7 +228,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
 
             } else {
               cl_hoadon.update({
-                'ma_hd':Number(kq.ma_hd),
+                'ma_hd': Number(kq.ma_hd),
                 'chi_tiet.ma_sp': kq.ma_mon
               }, {
                 $set: {
@@ -240,7 +288,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
         if (err)
           console.log(err);
         else {
-          var Doi_tuong_Kq = req.length+1;
+          var Doi_tuong_Kq = req.length + 1;
           Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
           Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
           Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
