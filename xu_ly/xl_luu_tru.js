@@ -39,6 +39,19 @@ class XL_LUU_TRU {
     return Doc_Thong_tin_Cua_hang()
   }
 
+  Ghi_moi_Doi_tuong(Loai_Doi_tuong, Doi_tuong) {
+    var Kq = ""
+    try {
+      var Duong_dan = Thu_muc_Du_lieu + "//" + Loai_Doi_tuong + "//" + Doi_tuong.Ma_so + "." + Cong_nghe
+      var Chuoi = JSON.stringify(Doi_tuong, null, "\t")
+      File.writeFileSync(Duong_dan, Chuoi, "UTF-8")
+    } catch (Loi) {
+      Kq = Loi
+    }
+
+    return Kq
+  }
+
 }
 
 

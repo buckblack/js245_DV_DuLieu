@@ -390,6 +390,16 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
           }
         })
       } catch (error) {}
+    }else if (Ma_so_Xu_ly == "ghi_san_pham") {
+      var Kq = ""
+      var sanpham = JSON.parse(Chuoi_Nhan)
+      Kq = Luu_tru.Ghi_moi_Doi_tuong("Mat_hang", sanpham)
+      if (Kq == "") {
+        //Du_lieu.sanpham.push(sanpham)
+        Chuoi_Kq = JSON.stringify(sanpham)
+      }
+      Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+      Dap_ung.end(Chuoi_Kq);
     } else {
       Chuoi_Kq = Luu_tru.Doc_Thong_tin_Dich_vu()
       Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
