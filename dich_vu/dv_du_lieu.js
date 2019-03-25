@@ -390,7 +390,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
           }
         })
       } catch (error) {}
-    }else if (Ma_so_Xu_ly == "ghi_san_pham") {
+    }else if (Ma_so_Xu_ly == "ghi_san_pham_moi") {
       var Kq = ""
       var sanpham = JSON.parse(Chuoi_Nhan)
       Kq = Luu_tru.Ghi_moi_Doi_tuong("Mat_hang", sanpham)
