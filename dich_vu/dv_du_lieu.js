@@ -400,6 +400,18 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
       }
       Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
       Dap_ung.end(Chuoi_Kq);
+    } else if (Ma_so_Xu_ly == "xoa_san_pham") {
+      var Kq = ""
+      var data = JSON.parse(Chuoi_Nhan)
+      Kq = Luu_tru.Xoa_Doi_tuong("Mat_hang", data)
+      if (Kq == "") {
+        Chuoi_Kq = "ok"
+      }
+      Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
+      Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+      Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+      Dap_ung.setHeader('Access-Control-Allow-Credentials', true);
+      Dap_ung.end(Chuoi_Kq);
     } else {
       Chuoi_Kq = Luu_tru.Doc_Thong_tin_Dich_vu()
       Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
