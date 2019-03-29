@@ -27,8 +27,14 @@ MongoClient.connect(url, function (err, client) {
 
   }
 });
-async function thay_doi_trang_thai_hoa_don(mahd,trangthai){
-  cl_hoadon.update({'ma_hd':Number(mahd)},{$set:{'trang_thai':trangthai}})
+async function thay_doi_trang_thai_hoa_don(mahd, trangthai) {
+  cl_hoadon.update({
+    'ma_hd': Number(mahd)
+  }, {
+    $set: {
+      'trang_thai': trangthai
+    }
+  })
 }
 var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
   var Chuoi_Nhan = ""
@@ -60,9 +66,8 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
       Dap_ung.end(Chuoi_Kq);
     } else if (Ma_so_Xu_ly == "danh_sach_hoa_don") {
       cl_hoadon = await db.collection("hoa_don")
-      cl_hoadon.find({}).toArray((err,res)=>{
-        if(res)
-        {
+      cl_hoadon.find({}).toArray((err, res) => {
+        if (res) {
           Chuoi_Kq = JSON.stringify(res)
           Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
           Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -71,16 +76,19 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
           Dap_ung.end(Chuoi_Kq);
         }
       })
-      
-    }else if (Ma_so_Xu_ly == "xu_ly_thanh_toan") {
+
+    } else if (Ma_so_Xu_ly == "xu_ly_thanh_toan") {
       cl_hoadon = await db.collection("hoa_don")
-      var data=JSON.parse(Chuoi_Nhan)
-      var dk={
+      var data = JSON.parse(Chuoi_Nhan)
+      var dk = {
         'ma_hd': Number(data.ma_hd)
       }
-      cl_hoadon.update(dk,{$set:{'trang_thai':data.trang_thai}},(err,res)=>{
-        if(res)
-        {
+      cl_hoadon.update(dk, {
+        $set: {
+          'trang_thai': data.trang_thai
+        }
+      }, (err, res) => {
+        if (res) {
           Chuoi_Kq = JSON.stringify('ok')
           Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
           Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -89,16 +97,20 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
           Dap_ung.end(Chuoi_Kq);
         }
       })
-      
-    }else if (Ma_so_Xu_ly == "xu_ly_ngung_phuc_vu") {
+
+    } else if (Ma_so_Xu_ly == "xu_ly_ngung_phuc_vu") {
       cl_ban = await db.collection("ban")
-      var data=JSON.parse(Chuoi_Nhan)
-      var dk={
+      var data = JSON.parse(Chuoi_Nhan)
+      var dk = {
         'ma_ban': Number(data.ma_ban)
       }
-      cl_ban.update(dk,{$set:{'trang_thai':'trống','hoa_don_phuc_vu':''}},(err,res)=>{
-        if(res)
-        {
+      cl_ban.update(dk, {
+        $set: {
+          'trang_thai': 'trống',
+          'hoa_don_phuc_vu': ''
+        }
+      }, (err, res) => {
+        if (res) {
           Chuoi_Kq = JSON.stringify('ok')
           Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
           Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -107,7 +119,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
           Dap_ung.end(Chuoi_Kq);
         }
       })
-      
+
     } else if (Ma_so_Xu_ly == "Khach_hang_Lien_he") {
       var from = "long4581994@gmail.com"
       var to = "buckblack44@gmail.com"
@@ -148,14 +160,18 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
       })
 
     } else if (Ma_so_Xu_ly == "doi_so_luong") {
-      var data=JSON.parse(Chuoi_Nhan);
-      var dk={
-        'ma_hd':Number(data.ma_hd),
-        'chi_tiet.ma_sp':data.ma_sp
+      var data = JSON.parse(Chuoi_Nhan);
+      var dk = {
+        'ma_hd': Number(data.ma_hd),
+        'chi_tiet.ma_sp': data.ma_sp
       }
       cl_hoadon = db.collection("hoa_don")
-      await thay_doi_trang_thai_hoa_don(data.ma_hd,'chưa thanh toán')
-      cl_hoadon.update(dk,{$set:{"chi_tiet.$.so_luong": Number(data.so_luong)}},(err,res)=>{
+      await thay_doi_trang_thai_hoa_don(data.ma_hd, 'chưa thanh toán')
+      cl_hoadon.update(dk, {
+        $set: {
+          "chi_tiet.$.so_luong": Number(data.so_luong)
+        }
+      }, (err, res) => {
         var Doi_tuong_Kq = 'ok'
         Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
         Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
@@ -165,14 +181,22 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
         Dap_ung.end(Chuoi_Kq);
       })
 
-    }else if (Ma_so_Xu_ly == "xoa_chi_tiet") {
-      var data=JSON.parse(Chuoi_Nhan);
-      var dk={
-        'ma_hd':Number(data.ma_hd),
-        'chi_tiet.ma_sp':data.ma_sp
+    } else if (Ma_so_Xu_ly == "xoa_chi_tiet") {
+      var data = JSON.parse(Chuoi_Nhan);
+      var dk = {
+        'ma_hd': Number(data.ma_hd),
+        'chi_tiet.ma_sp': data.ma_sp
       }
       cl_hoadon = db.collection("hoa_don")
-      cl_hoadon.update(dk,{'$pull':{ 'chi_tiet':{'ma_sp': data.ma_sp }}},{multi:true},(err,res)=>{
+      cl_hoadon.update(dk, {
+        '$pull': {
+          'chi_tiet': {
+            'ma_sp': data.ma_sp
+          }
+        }
+      }, {
+        multi: true
+      }, (err, res) => {
         var Doi_tuong_Kq = 'ok'
         Chuoi_Kq = JSON.stringify(Doi_tuong_Kq)
         Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
@@ -196,7 +220,7 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
       var kq = JSON.parse(Chuoi_Nhan);
       var Doi_tuong_Kq;
       cl_hoadon = await db.collection("hoa_don")
-      await thay_doi_trang_thai_hoa_don(kq.ma_hd,'chưa thanh toán')
+      await thay_doi_trang_thai_hoa_don(kq.ma_hd, 'chưa thanh toán')
       cl_ban = await db.collection("ban")
       await cl_hoadon.findOne({
         'ma_hd': Number(kq.ma_hd)
@@ -390,12 +414,12 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
           }
         })
       } catch (error) {}
-    }else if (Ma_so_Xu_ly == "ghi_san_pham_moi") {
+    } else if (Ma_so_Xu_ly == "ghi_san_pham_moi") {
       var Kq = ""
       var sanpham = JSON.parse(Chuoi_Nhan)
       Kq = Luu_tru.Ghi_moi_Doi_tuong("Mat_hang", sanpham)
       if (Kq == "") {
-        //Du_lieu.sanpham.push(sanpham)
+        Du_lieu.ds_mon_an.push(sanpham)
         Chuoi_Kq = JSON.stringify(sanpham)
       }
       Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
@@ -403,10 +427,11 @@ var Dich_vu = NodeJs_Dich_vu.createServer((Yeu_cau, Dap_ung) => {
     } else if (Ma_so_Xu_ly == "xoa_san_pham") {
       var Kq = ""
       var data = JSON.parse(Chuoi_Nhan)
+      console.log(data);
+      
       Kq = Luu_tru.Xoa_Doi_tuong("Mat_hang", data)
-      if (Kq == "") {
-        Chuoi_Kq = "ok"
-      }
+        ds_moi = Du_lieu.ds_mon_an.filter(x => x.Ma_so != data.Ma_so);
+        Du_lieu.ds_mon_an = ds_moi
       Dap_ung.setHeader("Access-Control-Allow-Origin", '*')
       Dap_ung.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
       Dap_ung.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
